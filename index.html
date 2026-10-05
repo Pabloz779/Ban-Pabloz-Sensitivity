@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#080808">
+<title>Ban Pabloz Sensitivity</title>
+<style>
+*{box-sizing:border-box}body{margin:0;background:#070707;color:#f5f5f5;font-family:Arial,Helvetica,sans-serif;min-height:100vh}
+body:before{content:"";position:fixed;inset:0;background:radial-gradient(circle at 50% 0%,#242424 0,#0b0b0b 38%,#050505 75%);z-index:-2}
+body:after{content:"";position:fixed;inset:0;opacity:.08;background-image:linear-gradient(45deg,#fff 1px,transparent 1px);background-size:28px 28px;z-index:-1}
+header{padding:28px 18px 10px;text-align:center}.logo{font-size:30px;font-weight:1000;letter-spacing:3px}.logo span{color:#ff3131}.tag{color:#aaa;margin-top:6px;font-size:13px}
+.ninja{font-size:74px;margin:8px 0;text-shadow:0 0 25px #ff3131}
+.wrap{max-width:620px;margin:auto;padding:12px 16px 40px}
+.card{background:rgba(18,18,18,.94);border:1px solid #292929;border-radius:20px;padding:20px;margin-top:14px;box-shadow:0 15px 45px #0008}
+label{display:block;font-size:13px;color:#aaa;margin:0 0 8px;font-weight:700}
+select,input,button{width:100%;border-radius:13px;padding:14px;border:1px solid #333;background:#0b0b0b;color:white;font-size:15px}
+select:focus,input:focus{outline:2px solid #ff3131;border-color:#ff3131}
+.row{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+button{border:0;background:linear-gradient(135deg,#ff3030,#a50000);font-weight:900;margin-top:15px;cursor:pointer;box-shadow:0 8px 24px #ff000033}
+button:hover{filter:brightness(1.12)}.settings{display:none}.settings.show{display:block}
+.setting{display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid #252525;padding:15px 0}.setting:last-child{border:0}
+.value{font-size:22px;font-weight:900;color:#ff3b3b}.name{font-weight:700}.sub{font-size:11px;color:#777;margin-top:3px}
+.copy{background:#191919;border:1px solid #333;box-shadow:none}.small{font-size:11px;color:#777;text-align:center;margin-top:15px;line-height:1.5}
+.badge{display:inline-block;padding:6px 9px;border-radius:999px;background:#251010;color:#ff5a5a;font-size:11px;font-weight:800;margin-bottom:8px}
+</style>
+</head>
+<body>
+<header>
+  <div class="ninja">🥷</div>
+  <div class="logo">BAN <span>PABLOZ</span> SENSITIVITY</div>
+  <div class="tag">Headshot sensitivity generator</div>
+</header>
+
+<main class="wrap">
+  <section class="card">
+    <div class="badge">🎯 HEADSHOT MODE</div>
+    <label for="phone">Choose your phone</label>
+    <input id="phone" list="phones" placeholder="Search your phone..." autocomplete="off">
+    <datalist id="phones"></datalist>
+
+    <div class="row" style="margin-top:12px">
+      <div>
+        <label for="style">Playstyle</label>
+        <select id="style">
+          <option value="headshot">Headshot / One-tap</option>
+          <option value="rush">Rush</option>
+          <option value="balanced">Balanced</option>
+        </select>
+      </div>
+      <div>
+        <label for="game">Game</label>
+        <select id="game">
+          <option>Free Fire</option>
+          <option>Free Fire MAX</option>
+        </select>
+      </div>
+    </div>
+
+    <button onclick="generate()">⚡ GET MY SENSITIVITY</button>
+  </section>
+
+  <section id="settings" class="card settings">
+    <div class="badge">🔥 BAN PABLOZ SETUP</div>
+    <div id="result"></div>
+    <button class="copy" onclick="copySettings()">📋 COPY SETTINGS</button>
+    <div class="small">These are recommended starting points. Sensitivity can vary with touch response, HUD and personal aim.</div>
+  </section>
+</main>
+
+<script>
+const phones = [
+"Apple iPhone 17 Pro","Apple iPhone 17 Pro Max","Apple iPhone 17","Apple iPhone 16 Pro","Apple iPhone 16 Pro Max",
+"Apple iPhone 15 Pro","Apple iPhone 15 Pro Max","Apple iPhone 14 Pro","Apple iPhone 14 Pro Max",
+"Samsung Galaxy S26 Ultra","Samsung Galaxy S25 Ultra","Samsung Galaxy S25","Samsung Galaxy S24 Ultra","Samsung Galaxy S24",
+"Samsung Galaxy A56","Samsung Galaxy A55","Samsung Galaxy A35","Samsung Galaxy A25",
+"Xiaomi 15 Ultra","Xiaomi 15","Xiaomi 14 Ultra","Xiaomi 14","Redmi Note 14 Pro+","Redmi Note 14 Pro","Redmi Note 13 Pro+",
+"POCO F7 Ultra","POCO F7 Pro","POCO X7 Pro","POCO X6 Pro",
+"OnePlus 13","OnePlus 13R","OnePlus 12","OnePlus 12R","OnePlus Nord 4",
+"Google Pixel 10 Pro","Google Pixel 10","Google Pixel 9 Pro","Google Pixel 9",
+"OPPO Find X8 Pro","OPPO Find X8","OPPO Reno 13 Pro","OPPO Reno 13",
+"vivo X200 Pro","vivo X200","vivo V50","vivo V40",
+"realme GT 7 Pro","realme GT 6","realme 14 Pro+","realme 13 Pro+",
+"ASUS ROG Phone 9 Pro","ASUS ROG Phone 9","ASUS ROG Phone 8 Pro",
+"Motorola Edge 60 Pro","Motorola Edge 50 Pro","Nothing Phone (3)","Nothing Phone (2a)","Honor Magic7 Pro",
+"Infinix GT 30 Pro","Infinix Note 50 Pro+","TECNO Camon 40 Pro","Nokia X30"
+];
+
+const dl=document.getElementById("phones");
+phones.forEach(p=>{const o=document.createElement("option");o.value=p;dl.appendChild(o)});
+
+let last="";
+function generate(){
+  const phone=document.getElementById("phone").value.trim() || "Your phone";
+  const style=document.getElementById("style").value;
+  let s = style==="rush" ? [98,94,88,82,52,76] : style==="balanced" ? [94,89,83,77,50,70] : [97,92,87,80,50,72];
+  const names=["General","Red Dot","2× Scope","4× Scope","Sniper Scope","Free Look"];
+  last=`BAN PABLOZ SENSITIVITY\\n${phone}\\n${document.getElementById("game").value}\\n\\n`;
+  document.getElementById("result").innerHTML=names.map((n,i)=>{
+    last+=`${n}: ${s[i]}\\n`;
+    return `<div class="setting"><div><div class="name">${n}</div><div class="sub">Recommended starting value</div></div><div class="value">${s[i]}</div></div>`;
+  }).join("");
+  document.getElementById("settings").classList.add("show");
+  document.getElementById("settings").scrollIntoView({behavior:"smooth",block:"start"});
+}
+async function copySettings(){
+  try{await navigator.clipboard.writeText(last);event.target.textContent="✅ COPIED!";setTimeout(()=>event.target.textContent="📋 COPY SETTINGS",1200)}
+  catch(e){alert(last)}
+}
+</script>
+</body>
+</html>
